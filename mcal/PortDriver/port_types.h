@@ -8,6 +8,16 @@
 #ifndef E15_ARM_REPO_MCAL_PORT_DRIVER_PORT_TYPES_H_
 #define E15_ARM_REPO_MCAL_PORT_DRIVER_PORT_TYPES_H_
 
+#define __I                 const volatile
+#define __IO                volatile
+#define __O                 volatile
+
+
+
+
+
+
+
 #define PORT_MODE_PIN_X_DIO                 0
 
 #define PORT_MODE_PIN_B0_U1RX               1
@@ -183,5 +193,8 @@ typedef struct
     Port_CurrDriveType      CurrentDrive;
     Port_LockStatusType     LockStatus;
 }Port_CfgType;
+
+
+
 
 #endif /* E15_ARM_REPO_MCAL_PORT_DRIVER_PORT_TYPES_H_ */

@@ -7,52 +7,88 @@
 
 #include "../../utils/Bit_Math.h"
 #include "../../utils/STD_Types.h"
+#include "dio_types.h"
 /*TODO: include the header file that contains register definitions */
+#include "../mcu_hw.h"
 
 #include "dio.h"
 
-Std_levelType Dio_ReadChannel(Dio_ChannelType ChannelId)
-{
-    Std_levelType ret;
-    Dio_PortType PortId = ChannelId / 8;
-    Dio_ChannelType ChannelPos = ChannelId % 8;
+volatile PORT_RegType* BaseAddrArr[6] = {PORTA_BaseAddr,PORTB_BaseAddr,
+                                                                PORTC_BaseAddr,PORTD_BaseAddr,
+                                                                PORTE_BaseAddr,PORTF_BaseAddr};
 
+
+
+uint8 Dio_ReadChannel(Dio_ChannelType ChannelId)
+{
+    uint8 ret;
+    uint8 PortId = ChannelId / 8;
+    uint8 ChannelPos = ChannelId % 8;
+    volatile PORT_RegType* BaseAddr=BaseAddrArr[PortId];
     /*TODO: Return the level value of given Channel */
+
+    ret = GET_BIT(BaseAddr->GPIODATA,ChannelPos);
 
     return ret;
 
 }
-void Dio_WriteChannel(Dio_ChannelType ChannelId, Std_levelType Level)
-{
-    Dio_PortType PortId = ChannelId / 8;
-    Dio_ChannelType ChannelPos = ChannelId % 8;
 
-    /*TODO: Write the input value in the corresponding ChannelId */
+
+
+
+void Dio_WriteChannel(Dio_ChannelType ChannelId, uint8 Level)
+{
+    uint8 PortId = ChannelId / 8;
+    uint8 ChannelPos = ChannelId % 8;
+    volatile PORT_RegType* BaseAddr=BaseAddrArr[PortId];
+
+        if(Level == STD_low)
+        {
+            CLR_BIT(BaseAddr->GPIODATA,ChannelPos);
+        }
+        else
+        {
+            SET_BIT(BaseAddr->GPIODATA,ChannelPos);
+        }
+
 }
+
+
 uint8 Dio_ReadPort(Dio_PortType PortId )
 {
     uint8 ret;
-
-    /*TODO: Return the Port Value*/
+    volatile PORT_RegType* BaseAddr=BaseAddrArr[PortId];
+    ret = BaseAddr->GPIODATA;
 
     return ret;
 }
+
+
+
 void Dio_WritePort( Dio_PortType PortId, uint8 value)
 {
-    /*TODO: Write the input value in the corresponding PortId */
+    volatile PORT_RegType* BaseAddr=BaseAddrArr[PortId];
+
+    BaseAddr->GPIODATA = value;
 
 }
+
+
+
 void Dio_FlipChannel( Dio_ChannelType ChannelId)
 {
-    /* TODO: toggle the corresponding ChannelId */
+    uint8 PortId = ChannelId / 8;
+    uint8 ChannelPos = ChannelId % 8;
+    volatile PORT_RegType* BaseAddr=BaseAddrArr[PortId];
+
+
+    TOGGLE_BIT(BaseAddr->GPIODATA,ChannelPos);
 
 
 }
 void Dio_FlipPort(Dio_PortType PortId)
 {
-    /*TODO: toggle the port value */
+    volatile PORT_RegType* BaseAddr=BaseAddrArr[PortId];
+    BaseAddr->GPIODATA = ~ BaseAddr->GPIODATA;
 
 }
-
-
-

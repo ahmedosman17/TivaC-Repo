@@ -11,7 +11,11 @@
 #include "../utils/Std_Types.h"
 
 /*TODO Configure Number of Enabled Interrupts*/
+
 #define NVIC_NUM_OF_ENABLED_INT                     5
+
+
+
 
 
 #endif /* E15_ARM_REPO_CONFIG_NVIC_CFG_H_ */

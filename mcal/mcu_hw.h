@@ -119,6 +119,7 @@ typedef struct
 {
     uint32 GPIODATA    ;
     /*TODO: add reserved space */
+    uint8 Reserved[0x3FC];
     uint32 GPIODIR     ;
     uint32 GPIOIS      ;
     uint32 GPIOIBE     ;
@@ -146,12 +147,30 @@ typedef struct
     uint32 GPIODMACTL  ;
 }PORT_RegType;
 
+
+
 #define PORTA_BaseAddr     ((volatile PORT_RegType*)0x400043FC)
 #define PORTB_BaseAddr     ((volatile PORT_RegType*)0x400053FC)
 #define PORTC_BaseAddr     ((volatile PORT_RegType*)0x400063FC)
 #define PORTD_BaseAddr     ((volatile PORT_RegType*)0x400073FC)
 #define PORTE_BaseAddr     ((volatile PORT_RegType*)0x400243FC)
 #define PORTF_BaseAddr     ((volatile PORT_RegType*)0x400253FC)
+
+
+
+/******************************************************************/
+/******************** INTERRUPT REGs ******************************/
+/******************************************************************/
+
+
+#define CORE_PERIPHERALS_BaseAddr       0xE000E000
+
+#define HWREG32(adress)                 (*((volatile uint32 *)(adress)))
+
+#define APINT                           HWREG32(CORE_PERIPHERALS_BaseAddr+0xD0C)
+
+#define INTERRUPT_ENABLE_REG(offest)    (((volatile uint32 *)(CORE_PERIPHERALS_BaseAddr+0x100))+offest)
+#define INTERRUPT_PRI_REG(offest)       (((volatile uint32 *)(CORE_PERIPHERALS_BaseAddr+0x400))+offest)
 
 /*===========================================================*
  * RCC REGISTERS                                             *
@@ -172,6 +191,8 @@ typedef struct
 #define RCGCUART_REG    (*((volatile RCGC_TagType*)0x400FE618))
 #define RCGCSSI_REG     (*((volatile RCGC_TagType*)0x400FE61C))
 #define RCGCI2C_REG     (*((volatile RCGC_TagType*)0x400FE620))
+
+
 
 
 
